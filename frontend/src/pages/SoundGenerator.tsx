@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '../utils/auth';
 
 interface GenerateRequest {
   prompt: string;
@@ -22,14 +23,14 @@ export default function SoundGenerator() {
     const fetchAudio = async () => {
       if (response?.filename) {
         try {
-          const token = localStorage.getItem('access_token');
-          const audioResponse = await fetch(`http://localhost:5000/sound/audio/${response.filename}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Accept': 'audio/wav',
-            },
-            credentials: 'include',
-          });
+          const audioResponse = await fetchWithAuth(
+            `http://localhost:5000/sound/audio/${response.filename}`,
+            {
+              headers: {
+                'Accept': 'audio/wav',
+              },
+            }
+          );
           
           if (!audioResponse.ok) {
             throw new Error(`Failed to load audio: ${audioResponse.statusText}`);
@@ -72,7 +73,6 @@ export default function SoundGenerator() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('access_token');
       const requestData: GenerateRequest = {
         prompt,
         filename,
@@ -80,24 +80,25 @@ export default function SoundGenerator() {
         duration
       };
 
-      const response = await fetch('http://localhost:5000/sound/generate', {
+      const response = await fetchWithAuth('http://localhost:5000/sound/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate sound');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate sound');
       }
 
       const data = await response.json();
       setResponse({ ...data, audioUrl: `http://localhost:5000/sound/audio/${data.filename}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      if (err instanceof Error && !err.message.includes('Authentication failed')) {
+        setError(err.message);
+      }
     } finally {
       setIsLoading(false);
     }

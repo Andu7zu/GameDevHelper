@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 import os
 from dotenv import load_dotenv
-from routes.api import api_bp, sound_bp
+from routes.api import sound_bp
 from routes.auth import auth_bp
 
 # Load environment variables
@@ -29,7 +29,6 @@ CORS(app,
      })
 
 # Register blueprints
-app.register_blueprint(api_bp, url_prefix='/api')
 app.register_blueprint(sound_bp, url_prefix='/sound')
 app.register_blueprint(auth_bp, url_prefix='/auth')
 

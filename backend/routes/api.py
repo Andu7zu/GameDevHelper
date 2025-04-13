@@ -5,22 +5,7 @@ import uuid
 from routes.auth_decorator import token_required
 import os
 
-api_bp = Blueprint('api', __name__)
 sound_bp = Blueprint('sound', __name__)
-
-# API routes
-@api_bp.route('/hello', methods=['POST'])
-@token_required
-def hello():
-    current_app.logger.info('Received request to /api/hello')
-    try:
-        response = {"message": "Hello World"}
-        current_app.logger.info(f'Sending response: {response}')
-        return response
-    except Exception as e:
-        current_app.logger.error(f'Error in /api/hello: {str(e)}')
-        return {"error": str(e)}, 500
-
 # Sound routes
 @sound_bp.route('/generate', methods=['POST'])
 @token_required
