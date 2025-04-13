@@ -4,6 +4,7 @@ from utils.user_directory import UserDirectoryManager
 import uuid
 from routes.auth_decorator import token_required
 import os
+from utils.imageToText import imageToText
 
 sound_bp = Blueprint('sound', __name__)
 # Sound routes
@@ -16,6 +17,8 @@ def generateSound():
             return {"error": "No prompt provided"}, 400
             
         prompt = data['prompt']
+        prompt_optimizer = "You're a sound engineer that can generate sounds that are very specific and detailed based on a description. Generate a high quality sound with very specific details on the following prompt:"
+        final_prompt = prompt_optimizer + " " + prompt
         filename = data.get('filename', '').strip()
         num_steps = data.get('num_of_steps', 200)
         duration = data.get('duration', 5)
@@ -43,10 +46,10 @@ def generateSound():
 
         # Generate sound
         sounds_dir = os.path.join(user_dir, 'sounds')
-        safe_filename = f"{filename}_{uuid.uuid4().hex[:8]}.wav"  # Add unique identifier to prevent overwrites
+        safe_filename = f"{filename}_{uuid.uuid4().hex[:8]}.wav"  # Add unique identifier to prevent overwrites"
         
         output_path = generate_audio(
-            prompt=prompt,
+            prompt=final_prompt,
             name=safe_filename.replace('.wav', ''),
             num_of_steps=num_steps,
             duration=duration,
@@ -130,4 +133,25 @@ def get_user_sounds():
         
     except Exception as e:
         current_app.logger.error(f'Error getting user sounds: {str(e)}')
+        return {"error": str(e)}, 500
+    
+
+@sound_bp.route('/analyze-image', methods=['POST'])
+@token_required
+def analyze_image():
+    try:
+        data = request.get_json()
+        if not data or 'image' not in data:
+            return {"error": "No image provided"}, 400
+            
+        image_file = data['image']
+        prompt = data['prompt']
+        
+        # TODO: Implement image analysis logic
+        response = imageToText(image_file, prompt)
+
+        return {"message": response}
+    
+    except Exception as e:
+        current_app.logger.error(f'Error in /sound/analyze-image: {str(e)}')
         return {"error": str(e)}, 500

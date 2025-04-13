@@ -24,7 +24,7 @@ def generate_audio(prompt, name, num_of_steps=500, duration=5, output_dir=None):
     pipe = StableAudioPipeline.from_pretrained("stabilityai/stable-audio-open-1.0", torch_dtype=torch.float32)
     pipe = pipe.to("cuda")
     
-    negative_prompt = "Low quality."
+    negative_prompt = "Low quality, Average quality."
     generator = torch.Generator("cuda").manual_seed(0)
     
     audio = pipe(

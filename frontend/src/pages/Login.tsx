@@ -23,28 +23,20 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'same-origin',
         body: JSON.stringify({
           credential: credentialResponse.credential,
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Backend error:', errorText);
-        throw new Error(`Backend error: ${errorText}`);
-      }
-
       const data = await response.json();
-      console.log('Login successful:', data);
-      
-      localStorage.setItem('access_token', data.access_token);
-      localStorage.setItem('refresh_token', data.refresh_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      navigate('/');
+      if (data.access_token && data.refresh_token) {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/');
+      }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login failed:', error);
       setError('Login failed. Please try again.');
     }
   };

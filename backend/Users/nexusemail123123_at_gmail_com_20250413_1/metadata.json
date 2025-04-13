@@ -33,5 +33,20 @@
     "prompt": "High quality sound of a V8 engine car revving the engine from 1000 to 6000 RPM in 3 seconds.",
     "created_at": "2025-04-13T19:31:27.945705",
     "filename": "Muscle Car_4ac2ad27.wav"
+  },
+  "Big Green Door_a83312ff.wav": {
+    "prompt": "The green door would make a loud, metallic, and metallic-sounding sound when opened. This sound could be described as a metallic clanging or a metallic scraping sound, as it is typically associated with the opening of a heavy door or a door that has been opened.",
+    "created_at": "2025-04-13T21:17:29.046161",
+    "filename": "Big Green Door_a83312ff.wav"
+  },
+  "Song_e7c33b2f.wav": {
+    "prompt": "The image features a mountain range with a red moon in the sky, creating a serene and mysterious atmosphere. The music should be ambient, with a mix of electronic and acoustic elements.",
+    "created_at": "2025-04-13T21:30:53.905737",
+    "filename": "Song_e7c33b2f.wav"
+  },
+  "Girl talking_24024c34.wav": {
+    "prompt": "Generate a voice line with the following tone: Her voice would likely be a combination of punk, rock, and metal music, with a strong and powerful tone. The girl should say \" I'm here to burn the world down.\"",
+    "created_at": "2025-04-13T22:34:35.875374",
+    "filename": "Girl talking_24024c34.wav"
   }
 }
