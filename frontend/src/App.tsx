@@ -4,6 +4,9 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import config from './utils/config';
+import SoundGenerator from './pages/SoundGenerator';
+import Dashboard from './pages/Dashboard';
+
 
 function App() {
   if (!config.googleClientId) {
@@ -18,6 +21,16 @@ function App() {
           <Route path="/" element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/soundGenerator" element={
+            <ProtectedRoute>
+              <SoundGenerator />
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           } />
         </Routes>

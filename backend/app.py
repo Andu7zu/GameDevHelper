@@ -25,8 +25,6 @@ CORS(app,
              "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
              "allow_headers": ["Content-Type", "Authorization"],
              "supports_credentials": True,
-             "expose_headers": ["Content-Type", "Authorization"],
-             "max_age": 600,
          }
      })
 

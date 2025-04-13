@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     get_jwt_identity,
     jwt_required
 )
+from utils.user_directory import UserDirectoryManager
 import os
 
 auth_bp = Blueprint('auth', __name__)
@@ -40,6 +41,14 @@ def google_login():
             'picture': idinfo.get('picture', '')
         }
 
+        # Setup user directory
+        try:
+            user_dir = UserDirectoryManager.setup_user_directory(user_info['email'])
+            current_app.logger.info(f'User directory setup at: {user_dir}')
+        except Exception as e:
+            current_app.logger.error(f'Error setting up user directory: {str(e)}')
+            # Continue with login even if directory creation fails
+            
         # Create tokens
         access_token = create_access_token(identity=user_info['email'])
         refresh_token = create_refresh_token(identity=user_info['email'])
